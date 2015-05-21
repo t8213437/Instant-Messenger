@@ -3,6 +3,7 @@ import socket               # Import socket module
 import sys
 import random
 import thread
+import getpass
 
 mod = 0
 
@@ -12,6 +13,7 @@ def Threadfun(string, sleeptime, lock):
 		print '\r' + msg,
 		if mod == 1:
 			print '>',
+
 
 if __name__ == "__main__":
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)         # Create a socket object
@@ -32,7 +34,7 @@ if __name__ == "__main__":
 		status = raw_input("Are you a registered user?(y/n)")
 		if status == 'y':
 			ac = raw_input('account: ')
-			pw = raw_input('password: ')
+			pw = getpass.getpass(prompt='password: ')
 			msg = '01' + str(len(ac)) + ac + str(len(pw)) + pw + str(port)
 			s.sendto(msg, ('<broadcast>', 12345))
 			#s.settimeout(5)
@@ -43,7 +45,7 @@ if __name__ == "__main__":
 				print 'Account number or password is incorrect!!'
 		elif status == 'n':
 			ac = raw_input('create account: ')
-			pw = raw_input('create password: ')
+			pw = getpass.getpass(prompt='create password: ')
 			msg = '00' + str(len(ac)) + ac + str(len(pw)) + pw + str(port)
 			s.sendto(msg, ('<broadcast>', 12345))
 			#s.settimeout(5)
@@ -79,7 +81,7 @@ if __name__ == "__main__":
 		elif op.startswith('talk'):
 			mod = 2
 			len_ac = len(op)-5
-			msg = '2' + str(len_ac) + op[5:len(op)] + 'talk from ' + ac + ': '
+			msg = '5' + str(len_ac) + op[5:len(op)] + str(len(ac)) + ac + 'talk from ' + ac + ': '
 			talk = raw_input('')
 			msg += talk + '\n'
 			s.sendto(msg, ('<broadcast>', 12345))
