@@ -84,6 +84,18 @@ while True:
 		len_ac = int(msg[1:2],0)
 		ac = msg[2:(len_ac+2)]
 		online.remove(ac)
+	elif msg[0:1] == '5':
+		len_ac = int(msg[1:2])
+		if msg[2:(len_ac+2)] in online:
+			len_sender_ac = int(msg[(len_ac+2):(len_ac+3)])
+			user_port = on_user[msg[2:(len_ac+2)]]
+			s.sendto(msg[(len_ac+3+len_sender_ac):len(msg)], ('<broadcast>', user_port))
+		else :
+			len_sender_ac = int(msg[(len_ac+2):(len_ac+3)])
+			user_port = on_user[msg[(len_ac+3):(len_ac+3+len_sender_ac)]]
+			ac = msg[2:(len_ac+2)]
+			msg = 'user ' + ac + ' is off-line.\n'
+			s.sendto(msg, ('<broadcast>', user_port))
 	print 'end'
 
 c.close()                # Close the connection
